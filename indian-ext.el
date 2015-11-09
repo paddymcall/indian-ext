@@ -45,7 +45,7 @@
 
 ;; The IAST and Velthuis are not case sensitive.
 
-;; It also defines an additional input method, devanagari-iast (use
+;; It also defines an additional input method, sanskrit-iast (use
 ;; with `M-x set-input-method').
 
 ;; You can find other input methods here:
@@ -179,7 +179,7 @@
 ;;; Set up an IAST input method
 
 (quail-define-package
- "sanskrit-iast-ext" "Sanskrit" "IAST" t
+ "sanskrit-iast" "Sanskrit" "IAST" t
  "Latin character input method with postfix modifiers.
 
 This is based on the Emacs standard input method
