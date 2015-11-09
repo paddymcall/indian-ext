@@ -1,4 +1,4 @@
-;;; ind-ext-tests.el  --- Tests for an extension to indian language utilities
+;;; indian-ext-tests.el  --- Tests for an extension to indian language utilities
 
 ;; Copyright (C) 2015 Patrick McAllister
 
@@ -32,7 +32,8 @@
 ;;; Code:
 
 (require 'ert)
-(require 'ind-ext)
+;; flycheck was complaining about (require 'indian-ext)?
+(load-file "indian-ext.el")
 
 (ert-deftest indian-ext-dev-velthuis-encode-region-test ()
   (with-temp-buffer
@@ -94,6 +95,6 @@
       (buffer-substring-no-properties (point-min) (point-max))
        "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
 
-(provide 'ind-ext-tests)
+(provide 'indian-ext-tests)
 
-;;; ind-ext-tests.el ends here
+;;; indian-ext-tests.el ends here

@@ -1,10 +1,10 @@
-;;; ind-ext.el --- Extension to indian language utilities
+;;; indian-ext.el --- Extension to indian language utilities
 
 ;; Copyright (C) 2015 Patrick McAllister
 
 ;; Author: Patrick McAllister <pma@rdorte.org>
 ;; Keywords: indian, devanagari, encoding
-;; URL: https://github.com/paddymcall/ind-util-extension
+;; URL: https://github.com/paddymcall/indian-ext
 
 ;; This file is not part of GNU Emacs.
 
@@ -611,6 +611,6 @@ Doubling the postfix separates the letter and postfix: e.g. a\\='\\=' -> a\\='"
  ("z~~" ["z~"])
  )
 
-(provide 'ind-ext)
+(provide 'indian-ext)
 
-;;; ind-ext.el ends here
+;;; indian-ext.el ends here
