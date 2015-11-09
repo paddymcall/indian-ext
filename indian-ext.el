@@ -1,4 +1,4 @@
-;;; indian-ext.el --- Extension to indian language utilities
+;;; indian-ext.el --- Extension to Indian language utilities
 
 ;; Copyright (C) 2015 Patrick McAllister
 
