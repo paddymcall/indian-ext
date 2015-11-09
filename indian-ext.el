@@ -26,19 +26,32 @@
 ;; This package provides extensions to the standard Emacs ind-util.el
 ;; functions.
 
+
+;; It is currently focused on providing methods for Sanskrit, but that
+;; might (and hopefully will) change in the future.
+
 ;; It defines the following extra decode/encode functions:
 
+
+;; between Velthuis and Devanāgarī:
 ;; `indian-ext-dev-velthuis-encode-region'
 ;; `indian-ext-dev-velthuis-decode-region'
+;; between SLP1 and Devanāgarī:
 ;; `indian-ext-dev-slp1-encode-region'
 ;; `indian-ext-dev-slp1-decode-region'
-;; `indian-ext-dev-iast-decode-region'
+;; between IAST and Devanāgarī.
 ;; `indian-ext-dev-iast-encode-region'
+;; `indian-ext-dev-iast-decode-region'
+
+;; The IAST and Velthuis are not case sensitive.
 
 ;; It also defines an additional input method, devanagari-iast (use
 ;; with `M-x set-input-method').
 
-;; Peculiarities: IAST and Velthuis are treated as case insensitive.
+;; You can find other input methods here:
+
+;; including Karoṣṭhī: http://stefanbaums.com/unicode/sanskrit.el
+;; requires login: http://indica-et-buddhica.org/repositorium/software/emacs-utf8-input-framework
 
 ;;; Code:
 
@@ -46,134 +59,127 @@
 (require 'ind-util)
 
 (eval-and-compile
-(defvar indian-ext-velthuis-table
-  '(;; for encode/decode
-    (;; vowel
-     ("a" "A")   ("aa" "Aa" "AA")  ("i" "I")   ("ii" "Ii" "II")  ("u" "U")   ("uu" "Uu" "UU")
-     (".r" ".R")  (".l" ".L")   nil   nil  ("e" "E")   ("ai" "Ai" "AI")
-     nil   nil   ("o" "O")   ("au" "Au" "AU")  (".R" ".R")  (".L" ".L"))
-    (;; consonant
-     ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("\"n" "\"N")
-     ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("~n" "~N")
-     (".t" ".T")  (".th" ".Th" ".TH") (".d" ".D")  (".dh" ".Dh" ".DH") (".n" ".N")
-     ("t" "T")   ("th" "Th" "TH")  ("d" "D")   ("dh" "Dh" "DH")  ("n" "N")   nil
-     ("p" "P")   ("ph" "Ph" "PH")  ("b" "B")   ("bh" "Bh" "BH")  ("m" "M")
-     ("y" "Y")   ("r" "R")   nil   ("l" "L")   nil  nil  ("v" "V")
-     ("\"s" "\"S")  (".s" ".S")  ("s" "S")   ("h" "H")
-     nil   nil   nil   nil   nil   nil   nil   nil
-     nil   nil)
-    (;; misc
-     "/"   (".m" ".M")  (".h" ".H")  "'"   "&"   (".o" ".O") ".")
-    (;; Digits (10)
-     "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
   
-(defvar indian-ext-iast-table
-  '(;; for encode/decode
-    (;; vowel
-     ("a" "A")   ("ā" "Ā")  ("i" "I")   ("ī" "Ī") ("u" "U")   ("ū" "Ū")
-     ("ṛ" "Ṛ")   ("ḷ" "Ḷ")  nil   nil   ("e" "E")   ("ai" "Ai" "AI")
-     nil   nil   ("o" "O")   ("au" "Au" "AU")  ("ṝ" "Ṝ") ("ḹ" "Ḹ"))
-    (;; consonant
-     ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("ṅ" "Ṅ")
-     ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("ñ" "Ñ")
-     ("ṭ" "Ṭ")   ("ṭh" "Ṭh" "ṬH")  ("ḍ" "Ḍ")   ("ḍh" "Ḍh" "ḌH")  ("ṇ" "Ṇ")
-     ("t" "T")   ("th" "Th" "TH")  ("d" "D")   ("dh" "Dh" "DH")  ("n" "N")   nil
-     ("p" "P")   ("ph" "Ph" "PH")  ("b" "B")   ("bh" "Bh" "BH")  ("m" "M")
-     ("y" "Y")   ("r" "R")   nil   ("l" "L")   ("L" "L")   nil   ("v" "V")
-     ("ś" "Ś") ("ṣ" "Ṣ")   ("s" "S")   ("h" "H")
-     nil   nil   nil   nil   nil   nil   nil   nil
-     nil   nil)
-    (;; misc
-     nil   ("ṃ" "Ṃ")   ("ḥ" "Ḥ")   "'"   nil   ".")))
+  (defvar indian-ext-velthuis-table
+    '(;; for encode/decode
+      (;; vowel
+       ("a" "A")   ("aa" "Aa" "AA")  ("i" "I")   ("ii" "Ii" "II")  ("u" "U")   ("uu" "Uu" "UU")
+       (".r" ".R")  (".l" ".L")   nil   nil  ("e" "E")   ("ai" "Ai" "AI")
+       nil   nil   ("o" "O")   ("au" "Au" "AU")  (".R" ".R")  (".L" ".L"))
+      (;; consonant
+       ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("\"n" "\"N")
+       ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("~n" "~N")
+       (".t" ".T")  (".th" ".Th" ".TH") (".d" ".D")  (".dh" ".Dh" ".DH") (".n" ".N")
+       ("t" "T")   ("th" "Th" "TH")  ("d" "D")   ("dh" "Dh" "DH")  ("n" "N")   nil
+       ("p" "P")   ("ph" "Ph" "PH")  ("b" "B")   ("bh" "Bh" "BH")  ("m" "M")
+       ("y" "Y")   ("r" "R")   nil   ("l" "L")   nil  nil  ("v" "V")
+       ("\"s" "\"S")  (".s" ".S")  ("s" "S")   ("h" "H")
+       nil   nil   nil   nil   nil   nil   nil   nil
+       nil   nil)
+      (;; misc
+       "/"   (".m" ".M")  (".h" ".H")  "'"   "&"   (".o" ".O") ".")
+      (;; Digits (10)
+       "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
+  
+  (defvar indian-ext-iast-table
+    '(;; for encode/decode
+      (;; vowel
+       ("a" "A")   ("ā" "Ā")  ("i" "I")   ("ī" "Ī") ("u" "U")   ("ū" "Ū")
+       ("ṛ" "Ṛ")   ("ḷ" "Ḷ")  nil   nil   ("e" "E")   ("ai" "Ai" "AI")
+       nil   nil   ("o" "O")   ("au" "Au" "AU")  ("ṝ" "Ṝ") ("ḹ" "Ḹ"))
+      (;; consonant
+       ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("ṅ" "Ṅ")
+       ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("ñ" "Ñ")
+       ("ṭ" "Ṭ")   ("ṭh" "Ṭh" "ṬH")  ("ḍ" "Ḍ")   ("ḍh" "Ḍh" "ḌH")  ("ṇ" "Ṇ")
+       ("t" "T")   ("th" "Th" "TH")  ("d" "D")   ("dh" "Dh" "DH")  ("n" "N")   nil
+       ("p" "P")   ("ph" "Ph" "PH")  ("b" "B")   ("bh" "Bh" "BH")  ("m" "M")
+       ("y" "Y")   ("r" "R")   nil   ("l" "L")   ("L" "L")   nil   ("v" "V")
+       ("ś" "Ś") ("ṣ" "Ṣ")   ("s" "S")   ("h" "H")
+       nil   nil   nil   nil   nil   nil   nil   nil
+       nil   nil)
+      (;; misc
+       nil   ("ṃ" "Ṃ")   ("ḥ" "Ḥ")   "'"   nil   ".")))
 
-(defvar indian-ext-slp1-table
-  '(;; for encode/decode
-    (;; vowel
-     "a"   "A"  "i"   "I" "u"   "U"
-     "f"   "x"  "e~"   "e1"   "e"   "E";; not sure about the e~ and e1;
-     "o~"   "o1"   "o"   "O"  "F" "X");; same for
-    (;; consonant
-     "k"   "K"  "g"   "G"  "N"
-     "c"   "C"  "j"   "J"  "Y"
-     "w"   "W"  "q"   "Q"  "R"
-     "t"   "T"  "d"   "D"  "n"  nil
-     "p"   "P"  "b"   "B"  "m"
-     "y"   "r"   nil   "l"   "L"  nil   "v"
-     "S" "z"   "s"   "h"
-     nil   nil   nil   nil   nil   nil   nil   nil      ;; NUKTAS; dunno.
-     "jY"   "kz")
-    (;; misc
-     "~"   "M"   "H"   "'"  nil "ॐ" ".")
-    (;; Digits (10)
-     0 1 2 3 4 5 6 7 8 9)
-    (;; Inscript-extra (4)  (#, $, ^, *, ])
-     "#" "$" "^" "*" "]"))
-  "See http://www.sanskritlibrary.org/Sanskrit/pub/lies_sl.pdf.")
+  (defvar indian-ext-slp1-table
+    '(;; for encode/decode
+      (;; vowel
+       "a"   "A"  "i"   "I" "u"   "U"
+       "f"   "x"  "e~"   "e1"   "e"   "E";; not sure about the e~ and e1;
+       "o~"   "o1"   "o"   "O"  "F" "X");; same for
+      (;; consonant
+       "k"   "K"  "g"   "G"  "N"
+       "c"   "C"  "j"   "J"  "Y"
+       "w"   "W"  "q"   "Q"  "R"
+       "t"   "T"  "d"   "D"  "n"  nil
+       "p"   "P"  "b"   "B"  "m"
+       "y"   "r"   nil   "l"   "L"  nil   "v"
+       "S" "z"   "s"   "h"
+       nil   nil   nil   nil   nil   nil   nil   nil      ;; NUKTAS; dunno.
+       "jY"   "kz")
+      (;; misc
+       "~"   "M"   "H"   "'"  nil "ॐ" ".")
+      (;; Digits (10)
+       0 1 2 3 4 5 6 7 8 9)
+      (;; Inscript-extra (4)  (#, $, ^, *, ])
+       "#" "$" "^" "*" "]"))
+    "See http://www.sanskritlibrary.org/Sanskrit/pub/lies_sl.pdf.")
 
-(defvar indian-ext-dev-iast-hash
-  (indian-make-hash indian-dev-base-table
-		    indian-ext-iast-table))
+  (defvar indian-ext-dev-iast-hash
+    (indian-make-hash indian-dev-base-table
+		      indian-ext-iast-table))
 
-(defvar indian-ext-dev-slp1-hash
-  (indian-make-hash indian-dev-base-table
-		    indian-ext-slp1-table))
-(defvar indian-ext-dev-velthuis-hash
-  (indian-make-hash indian-dev-base-table
-		    indian-ext-velthuis-table))
+  (defvar indian-ext-dev-slp1-hash
+    (indian-make-hash indian-dev-base-table
+		      indian-ext-slp1-table))
+  
+  (defvar indian-ext-dev-velthuis-hash
+    (indian-make-hash indian-dev-base-table
+		      indian-ext-velthuis-table))
 
-(defun indian-ext-dev-velthuis-encode-region (from to)
-  "In region FROM to TO, encode Devanāgarī as Velthuis."
-  (interactive "r")
-  (indian-translate-region
-   from to indian-ext-dev-velthuis-hash t))
+  (defun indian-ext-dev-velthuis-encode-region (from to)
+    "In region FROM to TO, encode Devanāgarī as Velthuis."
+    (interactive "r")
+    (indian-translate-region
+     from to indian-ext-dev-velthuis-hash t))
 
-(defun indian-ext-dev-velthuis-decode-region (from to)
-  "In region FROM to TO, decode Velthuis to Devanāgarī."
-  (interactive "r")
-  (indian-translate-region
-   from to indian-ext-dev-velthuis-hash nil))
+  (defun indian-ext-dev-velthuis-decode-region (from to)
+    "In region FROM to TO, decode Velthuis to Devanāgarī."
+    (interactive "r")
+    (indian-translate-region
+     from to indian-ext-dev-velthuis-hash nil))
 
+  (defun indian-ext-dev-slp1-encode-region (from to)
+    "In region FROM to TO, encode Devanāgarī as SLP1."
+    (interactive "r")
+    (indian-translate-region
+     from to indian-ext-dev-slp1-hash t))
 
-(defun indian-ext-dev-slp1-encode-region (from to)
-  "In region FROM to TO, encode Devanāgarī as SLP1."
-  (interactive "r")
-  (indian-translate-region
-   from to indian-ext-dev-slp1-hash t))
+  (defun indian-ext-dev-slp1-decode-region (from to)
+    "In region FROM to TO, decode SLP1 to Devanāgarī."
+    (interactive "r")
+    (indian-translate-region
+     from to indian-ext-dev-slp1-hash nil))
 
+  (defun indian-ext-dev-iast-encode-region (from to)
+    "In region FROM to TO, encode Devanāgarī as IAST."
+    (interactive "r")
+    (indian-translate-region
+     from to indian-ext-dev-iast-hash t))
 
-(defun indian-ext-dev-slp1-decode-region (from to)
-  "In region FROM to TO, decode SLP1 to Devanāgarī."
-  (interactive "r")
-  (indian-translate-region
-   from to indian-ext-dev-slp1-hash nil))
+  (defun indian-ext-dev-iast-decode-region (from to)
+    "In region FROM to TO, decode IAST to Devanāgarī."
+    (interactive "r")
+    (indian-translate-region
+     from to indian-ext-dev-iast-hash nil))
 
-
-
-(defun indian-ext-dev-iast-encode-region (from to)
-  "In region FROM to TO, encode Devanāgarī as IAST."
-  (interactive "r")
-  (indian-translate-region
-   from to indian-ext-dev-iast-hash t))
-
-
-
-
-(defun indian-ext-dev-iast-decode-region (from to)
-  "In region FROM to TO, decode IAST to Devanāgarī."
-  (interactive "r")
-  (indian-translate-region
-   from to indian-ext-dev-iast-hash nil))
-
-
-
-;; close eval-and-compile
-)
+  ;; close eval-and-compile
+  )
 
 
 ;;; Set up an IAST input method
 
 (quail-define-package
- "latin-iast-ext" "Sanskrit" "IAST" t
+ "sanskrit-iast-ext" "Sanskrit" "IAST" t
  "Latin character input method with postfix modifiers.
 
 This is based on the Emacs standard input method
