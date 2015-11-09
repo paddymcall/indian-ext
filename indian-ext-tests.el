@@ -27,7 +27,7 @@
 
 ;; Typical invocation:
 
-;; emacs -batch -l ert -l ind-ext.el -l tests.el  -f ert-run-tests-batch-and-exit
+;; emacs -Q -batch -l ert -l indian-ext.el -l indian-ext-tests.el  -f ert-run-tests-batch-and-exit
 
 ;;; Code:
 
@@ -54,9 +54,14 @@
     (should
      (equal
       (buffer-substring-no-properties (point-min) (point-max))
+      "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))
+    (erase-buffer)
+    (insert (upcase-initials "pramaa.nabhuutaaya jagaddhitai.si.ne pra.namya \"saastre sugataaya taayine ."))
+    (indian-ext-dev-velthuis-decode-region (point-min) (point-max))
+    (should
+     (equal
+      (buffer-substring-no-properties (point-min) (point-max))
       "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
-
-
 
 (ert-deftest indian-ext-dev-slp1-encode-region-test ()
   (with-temp-buffer
@@ -89,6 +94,13 @@
 (ert-deftest indian-ext-dev-iast-decode-region-test ()
   (with-temp-buffer
     (insert "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine ।")
+    (indian-ext-dev-iast-decode-region (point-min) (point-max))
+    (should
+     (equal
+      (buffer-substring-no-properties (point-min) (point-max))
+      "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))
+    (erase-buffer)
+    (insert (upcase-initials "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine ।"))
     (indian-ext-dev-iast-decode-region (point-min) (point-max))
     (should
      (equal

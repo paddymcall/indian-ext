@@ -38,6 +38,8 @@
 ;; It also defines an additional input method, devanagari-iast (use
 ;; with `M-x set-input-method').
 
+;; Peculiarities: IAST and Velthuis are treated as case insensitive.
+
 ;;; Code:
 
 (require 'quail)
@@ -47,42 +49,42 @@
 (defvar indian-ext-velthuis-table
   '(;; for encode/decode
     (;; vowel
-     "a"   "aa"  "i"   "ii"  "u"   "uu"
-     ".r"  ".l"   nil   nil  "e"   "ai"
-     nil   nil   "o"   "au"  ".R"  ".L")
+     ("a" "A")   ("aa" "Aa" "AA")  ("i" "I")   ("ii" "Ii" "II")  ("u" "U")   ("uu" "Uu" "UU")
+     (".r" ".R")  (".l" ".L")   nil   nil  ("e" "E")   ("ai" "Ai" "AI")
+     nil   nil   ("o" "O")   ("au" "Au" "AU")  (".R" ".R")  (".L" ".L"))
     (;; consonant
-     "k"   "kh"  "g"   "gh"  "\"n"
-     "c"   "ch"  "j"   "jh"  "~n"
-     ".t"  ".th" ".d"  ".dh" ".n"
-     "t"   "th"  "d"   "dh"  "n"   nil
-     "p"   "ph"  "b"   "bh"  "m"
-     "y"   "r"   nil   "l"   nil  nil  "v"
-     "\"s"  ".s"  "s"   "h"
+     ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("\"n" "\"N")
+     ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("~n" "~N")
+     (".t" ".T")  (".th" ".Th" ".TH") (".d" ".D")  (".dh" ".Dh" ".DH") (".n" ".N")
+     ("t" "T")   ("th" "Th" "TH")  ("d" "D")   ("dh" "Dh" "DH")  ("n" "N")   nil
+     ("p" "P")   ("ph" "Ph" "PH")  ("b" "B")   ("bh" "Bh" "BH")  ("m" "M")
+     ("y" "Y")   ("r" "R")   nil   ("l" "L")   nil  nil  ("v" "V")
+     ("\"s" "\"S")  (".s" ".S")  ("s" "S")   ("h" "H")
      nil   nil   nil   nil   nil   nil   nil   nil
      nil   nil)
     (;; misc
-     "/"   ".m"  ".h"  "'"   "&"   ".o" ".")
+     "/"   (".m" ".M")  (".h" ".H")  "'"   "&"   (".o" ".O") ".")
     (;; Digits (10)
      "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
   
 (defvar indian-ext-iast-table
   '(;; for encode/decode
     (;; vowel
-     "a"   "ā"  "i"   "ī" "u"   "ū"
-     "ṛ"   "ḷ"  nil   nil   "e"   "ai"
-     nil   nil   "o"   "au"  "ṝ" "ḹ")
+     ("a" "A")   ("ā" "Ā")  ("i" "I")   ("ī" "Ī") ("u" "U")   ("ū" "Ū")
+     ("ṛ" "Ṛ")   ("ḷ" "Ḷ")  nil   nil   ("e" "E")   ("ai" "Ai" "AI")
+     nil   nil   ("o" "O")   ("au" "Au" "AU")  ("ṝ" "Ṝ") ("ḹ" "Ḹ"))
     (;; consonant
-     "k"   "kh"  "g"   "gh"  "ṅ"
-     "c"   "ch"  "j"   "jh"  "ñ"
-     "ṭ"   "ṭh"  "ḍ"   "ḍh"  "ṇ"
-     "t"   "th"  "d"   "dh"  "n"   nil
-     "p"   "ph"  "b"   "bh"  "m"
-     "y"   "r"   nil   "l"   "L"   nil   "v"
-     "ś" "ṣ"   "s"   "h"
+     ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("ṅ" "Ṅ")
+     ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("ñ" "Ñ")
+     ("ṭ" "Ṭ")   ("ṭh" "Ṭh" "ṬH")  ("ḍ" "Ḍ")   ("ḍh" "Ḍh" "ḌH")  ("ṇ" "Ṇ")
+     ("t" "T")   ("th" "Th" "TH")  ("d" "D")   ("dh" "Dh" "DH")  ("n" "N")   nil
+     ("p" "P")   ("ph" "Ph" "PH")  ("b" "B")   ("bh" "Bh" "BH")  ("m" "M")
+     ("y" "Y")   ("r" "R")   nil   ("l" "L")   ("L" "L")   nil   ("v" "V")
+     ("ś" "Ś") ("ṣ" "Ṣ")   ("s" "S")   ("h" "H")
      nil   nil   nil   nil   nil   nil   nil   nil
      nil   nil)
     (;; misc
-     nil   "ṃ"   "ḥ"   "'"   nil   ".")))
+     nil   ("ṃ" "Ṃ")   ("ḥ" "Ḥ")   "'"   nil   ".")))
 
 (defvar indian-ext-slp1-table
   '(;; for encode/decode
@@ -124,8 +126,6 @@
   (interactive "r")
   (indian-translate-region
    from to indian-ext-dev-velthuis-hash t))
-
-
 
 (defun indian-ext-dev-velthuis-decode-region (from to)
   "In region FROM to TO, decode Velthuis to Devanāgarī."
