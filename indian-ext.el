@@ -1,6 +1,6 @@
 ;;; indian-ext.el --- Extension to Indian language utilities
 
-;; Copyright (C) 2015 Patrick McAllister
+;; Copyright (C) 2015-2016 Patrick McAllister
 
 ;; Author: Patrick McAllister <pma@rdorte.org>
 ;; Keywords: indian, devanagari, encoding
@@ -127,7 +127,7 @@
   (defvar indian-ext-dev-iast-hash
     (indian-make-hash indian-dev-base-table
 		      indian-ext-iast-table))
-
+  
   (defvar indian-ext-dev-slp1-hash
     (indian-make-hash indian-dev-base-table
 		      indian-ext-slp1-table))
