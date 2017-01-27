@@ -1,6 +1,6 @@
 ;;; indian-ext.el --- Extension to Indian language utilities
 
-;; Copyright (C) 2015 Patrick McAllister
+;; Copyright (C) 2015-2017 Patrick McAllister
 
 ;; Author: Patrick McAllister <pma@rdorte.org>
 ;; Keywords: indian, devanagari, encoding
@@ -57,7 +57,6 @@
 
 (require 'quail)
 (require 'ind-util)
-
 (eval-and-compile
   
   (defvar indian-ext-velthuis-table
