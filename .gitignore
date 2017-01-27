@@ -1,5 +1,6 @@
-# Compiled
+# Emacsy
 *.elc
+*~
 
 # Packaging
 .cask
