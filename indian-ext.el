@@ -217,12 +217,7 @@
     (with-temp-buffer
       (insert string)
       (indian-ext-dev-iast-decode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max))))
-
-  ;; (indian-ext-dev-iast-encode-string (indian-ext-dev-iast-decode-string "anyathā"))
-
-  ;; close eval-and-compile
-  )
+      (buffer-substring-no-properties (point-min) (point-max)))))
 
 
 ;;; Set up an IAST input method
