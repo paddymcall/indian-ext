@@ -89,11 +89,11 @@
     (should
      (equal
       (buffer-substring-no-properties (point-min) (point-max))
-      "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine ।"))))
+      "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine ."))))
 
 (ert-deftest indian-ext-dev-iast-decode-region-test ()
   (with-temp-buffer
-    (insert "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine ।")
+    (insert "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine .")
     (indian-ext-dev-iast-decode-region (point-min) (point-max))
     (should
      (equal
@@ -105,7 +105,19 @@
     (should
      (equal
       (buffer-substring-no-properties (point-min) (point-max))
-       "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
+      "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
+
+
+(ert-deftest indian-ext-dev-iast-encode-punctuation-om-test ()
+  (with-temp-buffer
+    (insert "om: o m: OM; | “atra” / yad // śubham.")
+    (indian-ext-dev-iast-decode-region (point-min) (point-max))
+    (should
+     (equal
+      (buffer-substring-no-properties (point-min) (point-max))
+      "om: ओ म्: ॐ; | “अत्र” / यद् // शुभम्।"))))
+
+;; (ert "indian-ext-dev-iast-encode-punctuation-test")
 
 (provide 'indian-ext-tests)
 

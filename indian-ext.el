@@ -97,7 +97,7 @@
        nil   nil   nil   nil   nil   nil   nil   nil
        nil   nil)
       (	;; misc
-       nil   ("ṃ" "Ṃ")   ("ḥ" "Ḥ")   "'"   nil   ".")))
+       nil   ("ṃ" "Ṃ")   ("ḥ" "Ḥ")   "'"   nil   ("OM") ".")))
 
   (defvar indian-ext-slp1-table
     '(	;; for encode/decode
