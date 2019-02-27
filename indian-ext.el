@@ -60,12 +60,12 @@
 (eval-and-compile
   
   (defvar indian-ext-velthuis-table
-    '(	;; for encode/decode
-      (	;; vowel
+    '(;; for encode/decode
+      (;; vowel
        ("a" "A")   ("aa" "Aa" "AA")  ("i" "I")   ("ii" "Ii" "II")  ("u" "U")   ("uu" "Uu" "UU")
        (".r" ".R")  (".l" ".L")   nil   nil  ("e" "E")   ("ai" "Ai" "AI")
        nil   nil   ("o" "O")   ("au" "Au" "AU")  (".R" ".R")  (".L" ".L"))
-      (	;; consonant
+      (;; consonant
        ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("\"n" "\"N")
        ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("~n" "~N")
        (".t" ".T")  (".th" ".Th" ".TH") (".d" ".D")  (".dh" ".Dh" ".DH") (".n" ".N")
@@ -75,18 +75,18 @@
        ("\"s" "\"S")  (".s" ".S")  ("s" "S")   ("h" "H")
        nil   nil   nil   nil   nil   nil   nil   nil
        nil   nil)
-      (	;; misc
+      (;; misc
        "/"   (".m" ".M")  (".h" ".H")  "'"   "&"   (".o" ".O") ".")
-      (	;; Digits (10)
+      (;; Digits (10)
        "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
   
   (defvar indian-ext-iast-table
-    '(	;; for encode/decode
-      (	;; vowel
+    '(;; for encode/decode
+      (;; vowel
        ("a" "A")   ("ā" "Ā")  ("i" "I")   ("ī" "Ī") ("u" "U")   ("ū" "Ū")
        ("ṛ" "Ṛ")   ("ḷ" "Ḷ")  nil   nil   ("e" "E")   ("ai" "Ai" "AI")
        nil   nil   ("o" "O")   ("au" "Au" "AU")  ("ṝ" "Ṝ") ("ḹ" "Ḹ"))
-      (	;; consonant
+      (;; consonant
        ("k" "K")   ("kh" "Kh" "KH")  ("g" "G")   ("gh" "Gh" "GH")  ("ṅ" "Ṅ")
        ("c" "C")   ("ch" "Ch" "CH")  ("j" "J")   ("jh" "Jh" "JH")  ("ñ" "Ñ")
        ("ṭ" "Ṭ")   ("ṭh" "Ṭh" "ṬH")  ("ḍ" "Ḍ")   ("ḍh" "Ḍh" "ḌH")  ("ṇ" "Ṇ")
@@ -96,16 +96,16 @@
        ("ś" "Ś") ("ṣ" "Ṣ")   ("s" "S")   ("h" "H")
        nil   nil   nil   nil   nil   nil   nil   nil
        nil   nil)
-      (	;; misc
+      (;; misc
        nil   ("ṃ" "Ṃ")   ("ḥ" "Ḥ")   "'"   nil   ("OM") ".")))
 
   (defvar indian-ext-slp1-table
-    '(	;; for encode/decode
-      (	;; vowel
+    '(;; for encode/decode
+      (;; vowel
        "a"   "A"  "i"   "I" "u"   "U"
        "f"   "x"  "e~"   "e1"   "e"   "E" ;; not sure about the e~ and e1;
        "o~"   "o1"   "o"   "O"  "F" "X")  ;; same for
-      (					  ;; consonant
+      (;; consonant
        "k"   "K"  "g"   "G"  "N"
        "c"   "C"  "j"   "J"  "Y"
        "w"   "W"  "q"   "Q"  "R"
@@ -115,11 +115,11 @@
        "S" "z"   "s"   "h"
        nil   nil   nil   nil   nil   nil   nil   nil ;; NUKTAS; dunno.
        "jY"   "kz")
-      (	;; misc
+      (;; misc
        "~"   "M"   "H"   "'"  nil "ॐ" ".")
-      (	;; Digits (10)
+      (;; Digits (10)
        0 1 2 3 4 5 6 7 8 9)
-      (	;; Inscript-extra (4)  (#, $, ^, *, ])
+      (;; Inscript-extra (4)  (#, $, ^, *, ])
        "#" "$" "^" "*" "]"))
     "See http://www.sanskritlibrary.org/Sanskrit/pub/lies_sl.pdf.")
 
@@ -168,8 +168,9 @@
   (defun indian-ext-dev-slp1-encode-region (from to)
     "In region FROM to TO, encode Devanāgarī as SLP1."
     (interactive "r")
-    (indian-translate-region
-     from to indian-ext-dev-slp1-hash t))
+    (let ((case-fold-search nil))
+      (indian-translate-region
+       from to indian-ext-dev-slp1-hash t)))
 
   (defun indian-ext-dev-slp1-encode-string (string)
     "Encode STRING in Devanāgarī to SLP1."
@@ -181,8 +182,9 @@
   (defun indian-ext-dev-slp1-decode-region (from to)
     "In region FROM to TO, decode SLP1 to Devanāgarī."
     (interactive "r")
-    (indian-translate-region
-     from to indian-ext-dev-slp1-hash nil))
+    (let ((case-fold-search nil))
+      (indian-translate-region
+      from to indian-ext-dev-slp1-hash nil)))
   
   (defun indian-ext-dev-slp1-decode-string (string)
     "Decode STRING in SLP1 to Devanāgarī."

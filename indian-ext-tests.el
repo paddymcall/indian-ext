@@ -116,8 +116,62 @@
      (equal
       (buffer-substring-no-properties (point-min) (point-max))
       "om: ओ म्: ॐ; | “अत्र” / यद् // शुभम्।"))))
-
 ;; (ert "indian-ext-dev-iast-encode-punctuation-test")
+
+(ert-deftest test-indian-ext-slp1-jya-1 ()
+  (should
+   (equal
+    (indian-ext-dev-slp1-encode-string "प्रयुज्यते")
+    "prayujyate")))
+
+(ert-deftest test-indian-ext-slp1-jya-2 ()
+  (let ((case-fold-search nil))
+    (should
+     (equal
+      (indian-ext-dev-slp1-decode-string
+       (indian-ext-dev-slp1-encode-string "प्रयुज्यते"))
+      "प्रयुज्यते"))))
+
+;; Functions should work independently of user’s case-fold-search setting
+
+(ert-deftest test-indian-ext-roundtrips-force-case-fold-search-off ()
+  (let ((case-fold-search nil)
+        (cases '("ज्ञानम्"
+                 "क्षणभङ्ग"
+                 "प्रयुज्यते"
+                 "अत्र"
+                 "किं तर्हि")))
+    (dolist (coder '(slp1 velthuis iast))
+      (mapc
+       (lambda (c)
+         (should
+          (equal
+           (funcall (intern (format "indian-ext-dev-%s-decode-string" coder))
+                    (funcall (intern (format "indian-ext-dev-%s-encode-string" coder))
+                             c))
+           c)))
+       cases))))
+
+
+(ert-deftest test-indian-ext-roundtrips-force-case-fold-search-on ()
+  (let ((case-fold-search t)
+        (cases '("ज्ञानम्"
+                 "क्षणभङ्ग"
+                 "प्रयुज्यते"
+                 "अत्र"
+                 "किं तर्हि")))
+    (dolist (coder '(slp1 velthuis iast))
+      (mapc
+       (lambda (c)
+         (should
+          (equal
+           (funcall (intern (format "indian-ext-dev-%s-decode-string" coder))
+                    (funcall (intern (format "indian-ext-dev-%s-encode-string" coder))
+                             c))
+           c)))
+       cases))))
+
+
 
 (provide 'indian-ext-tests)
 
