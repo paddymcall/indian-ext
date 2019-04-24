@@ -1,11 +1,10 @@
 ;;; indian-ext.el --- Extension to Indian language utilities -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2017 Patrick McAllister
+;; Copyright (C) 2015-2019 Patrick McAllister
 
 ;; Author: Patrick McAllister <pma@rdorte.org>
 ;; Keywords: i18n, tools, wp, indian, devanagari, encoding
 ;; URL: https://github.com/paddymcall/indian-ext
-;; Version: 0.1
 
 ;; This file is not part of GNU Emacs.
 
@@ -26,7 +25,6 @@
 
 ;; This package provides extensions to the standard Emacs ind-util.el
 ;; functions.
-
 
 ;; It is currently focused on providing methods for Sanskrit, but that
 ;; might (and hopefully will) change in the future.

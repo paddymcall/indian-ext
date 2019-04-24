@@ -1,6 +1,6 @@
 ;;; indian-ext-tests.el  --- Tests for an extension to indian language utilities -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 Patrick McAllister
+;; Copyright (C) 2015--2019 Patrick McAllister
 
 ;; Author: Patrick McAllister <pma@rdorte.org>
 ;; Keywords: tests, ert
@@ -32,8 +32,7 @@
 ;;; Code:
 
 (require 'ert)
-;; flycheck was complaining about (require 'indian-ext)?
-(load-file "indian-ext.el")
+(require 'indian-ext)
 
 (ert-deftest test-indian-ext-dev-velthuis-encode-region ()
   (with-temp-buffer
