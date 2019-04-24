@@ -35,7 +35,7 @@
 ;; flycheck was complaining about (require 'indian-ext)?
 (load-file "indian-ext.el")
 
-(ert-deftest indian-ext-dev-velthuis-encode-region-test ()
+(ert-deftest test-indian-ext-dev-velthuis-encode-region ()
   (with-temp-buffer
     (insert "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।")
     (indian-ext-dev-velthuis-encode-region (point-min) (point-max))
@@ -47,7 +47,7 @@
 
 
 
-(ert-deftest indian-ext-dev-velthuis-decode-region-test ()
+(ert-deftest test-indian-ext-dev-velthuis-decode-region ()
   (with-temp-buffer
     (insert "pramaa.nabhuutaaya jagaddhitai.si.ne pra.namya \"saastre sugataaya taayine .")
     (indian-ext-dev-velthuis-decode-region (point-min) (point-max))
@@ -63,7 +63,7 @@
       (buffer-substring-no-properties (point-min) (point-max))
       "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
 
-(ert-deftest indian-ext-dev-slp1-encode-region-test ()
+(ert-deftest test-indian-ext-dev-slp1-encode-region ()
   (with-temp-buffer
     (insert "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।")
     (indian-ext-dev-slp1-encode-region (point-min) (point-max))
@@ -72,7 +72,7 @@
       (buffer-substring-no-properties (point-min) (point-max))
       "pramARaBUtAya jagadDitEziRe praRamya SAstre sugatAya tAyine ."))))
 
-(ert-deftest indian-ext-dev-slp1-decode-region-test ()
+(ert-deftest test-indian-ext-dev-slp1-decode-region ()
   (with-temp-buffer
     (insert "pramARaBUtAya jagadDitEziRe praRamya SAstre sugatAya tAyine .")
     (indian-ext-dev-slp1-decode-region (point-min) (point-max))
@@ -81,7 +81,7 @@
       (buffer-substring-no-properties (point-min) (point-max))
       "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
 
-(ert-deftest indian-ext-dev-iast-encode-region-test ()
+(ert-deftest test-indian-ext-dev-iast-encode-region ()
   
   (with-temp-buffer
     (insert "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।")
@@ -91,7 +91,7 @@
       (buffer-substring-no-properties (point-min) (point-max))
       "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine ."))))
 
-(ert-deftest indian-ext-dev-iast-decode-region-test ()
+(ert-deftest test-indian-ext-dev-iast-decode-region ()
   (with-temp-buffer
     (insert "pramāṇabhūtāya jagaddhitaiṣiṇe praṇamya śāstre sugatāya tāyine .")
     (indian-ext-dev-iast-decode-region (point-min) (point-max))
@@ -108,7 +108,7 @@
       "प्रमाणभूताय जगद्धितैषिणे प्रणम्य शास्त्रे सुगताय तायिने ।"))))
 
 
-(ert-deftest indian-ext-dev-iast-encode-punctuation-om-test ()
+(ert-deftest test-indian-ext-dev-iast-encode-punctuation-om ()
   (with-temp-buffer
     (insert "om: o m: OM; | “atra” / yad // śubham.")
     (indian-ext-dev-iast-decode-region (point-min) (point-max))
