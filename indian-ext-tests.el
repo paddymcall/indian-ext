@@ -1,4 +1,4 @@
-;;; indian-ext-tests.el  --- Tests for an extension to indian language utilities
+;;; indian-ext-tests.el  --- Tests for an extension to indian language utilities -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2015 Patrick McAllister
 

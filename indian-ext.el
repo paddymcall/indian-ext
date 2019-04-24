@@ -1,10 +1,11 @@
-;;; indian-ext.el --- Extension to Indian language utilities
+;;; indian-ext.el --- Extension to Indian language utilities -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2015-2017 Patrick McAllister
 
 ;; Author: Patrick McAllister <pma@rdorte.org>
-;; Keywords: indian, devanagari, encoding
+;; Keywords: i18n, tools, wp, indian, devanagari, encoding
 ;; URL: https://github.com/paddymcall/indian-ext
+;; Version: 0.1
 
 ;; This file is not part of GNU Emacs.
 
@@ -43,10 +44,10 @@
 ;; `indian-ext-dev-iast-encode-region'
 ;; `indian-ext-dev-iast-decode-region'
 
-;; The IAST and Velthuis are not case sensitive.
+;; IAST and Velthuis encodings are not case sensitive.
 
-;; It also defines an additional input method, sanskrit-iast (use
-;; with `M-x set-input-method').
+;; This package also defines an additional input method, sanskrit-iast
+;; (use with `M-x set-input-method').
 
 ;; You can find other input methods here:
 
@@ -57,6 +58,7 @@
 
 (require 'quail)
 (require 'ind-util)
+
 (eval-and-compile
   
   (defvar indian-ext-velthuis-table
@@ -133,93 +135,93 @@
   
   (defvar indian-ext-dev-velthuis-hash
     (indian-make-hash indian-dev-base-table
-		      indian-ext-velthuis-table))
+		      indian-ext-velthuis-table)))
 
-  (defun indian-ext-dev-velthuis-encode-region (from to)
-    "In region FROM to TO, encode Devanāgarī as Velthuis."
-    (interactive "r")
+(defun indian-ext-dev-velthuis-encode-region (from to)
+  "In region FROM to TO, encode Devanāgarī as Velthuis."
+  (interactive "r")
+  (indian-translate-region
+   from to indian-ext-dev-velthuis-hash t))
+
+(defun indian-ext-dev-velthuis-encode-string (string)
+  "Encode STRING in Devanāgarī to Velthuis."
+  (with-temp-buffer
+    (insert string)
+    (indian-ext-dev-velthuis-encode-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+;; (indian-ext-dev-velthuis-decode-string "anyathaa")
+
+(defun indian-ext-dev-velthuis-decode-region (from to)
+  "In region FROM to TO, decode Velthuis to Devanāgarī."
+  (interactive "r")
+  (indian-translate-region
+   from to indian-ext-dev-velthuis-hash nil))
+
+(defun indian-ext-dev-velthuis-decode-string (string)
+  "Decode STRING in Velthuis to Devanāgarī."
+  (with-temp-buffer
+    (insert string)
+    (indian-ext-dev-velthuis-decode-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+;; (indian-ext-dev-velthuis-encode-string (indian-ext-dev-iast-decode-string "anyathā"))"anyathaa"
+
+(defun indian-ext-dev-slp1-encode-region (from to)
+  "In region FROM to TO, encode Devanāgarī as SLP1."
+  (interactive "r")
+  (let ((case-fold-search nil))
     (indian-translate-region
-     from to indian-ext-dev-velthuis-hash t))
+     from to indian-ext-dev-slp1-hash t)))
 
-  (defun indian-ext-dev-velthuis-encode-string (string)
-    "Encode STRING in Devanāgarī to Velthuis."
-    (with-temp-buffer
-      (insert string)
-      (indian-ext-dev-velthuis-encode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max))))
+(defun indian-ext-dev-slp1-encode-string (string)
+  "Encode STRING in Devanāgarī to SLP1."
+  (with-temp-buffer
+    (insert string)
+    (indian-ext-dev-slp1-encode-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
-  ;; (indian-ext-dev-velthuis-decode-string "anyathaa")
-
-  (defun indian-ext-dev-velthuis-decode-region (from to)
-    "In region FROM to TO, decode Velthuis to Devanāgarī."
-    (interactive "r")
+(defun indian-ext-dev-slp1-decode-region (from to)
+  "In region FROM to TO, decode SLP1 to Devanāgarī."
+  (interactive "r")
+  (let ((case-fold-search nil))
     (indian-translate-region
-     from to indian-ext-dev-velthuis-hash nil))
-    
-  (defun indian-ext-dev-velthuis-decode-string (string)
-    "Decode STRING in Velthuis to Devanāgarī."
-    (with-temp-buffer
-      (insert string)
-      (indian-ext-dev-velthuis-decode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max))))
+     from to indian-ext-dev-slp1-hash nil)))
 
-  ;; (indian-ext-dev-velthuis-encode-string (indian-ext-dev-iast-decode-string "anyathā"))"anyathaa"
+(defun indian-ext-dev-slp1-decode-string (string)
+  "Decode STRING in SLP1 to Devanāgarī."
+  (with-temp-buffer
+    (insert string)
+    (indian-ext-dev-slp1-decode-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
-  (defun indian-ext-dev-slp1-encode-region (from to)
-    "In region FROM to TO, encode Devanāgarī as SLP1."
-    (interactive "r")
-    (let ((case-fold-search nil))
-      (indian-translate-region
-       from to indian-ext-dev-slp1-hash t)))
+;; (indian-ext-dev-slp1-encode-string (indian-ext-dev-slp1-decode-string "anyaTA"))
 
-  (defun indian-ext-dev-slp1-encode-string (string)
-    "Encode STRING in Devanāgarī to SLP1."
-    (with-temp-buffer
-      (insert string)
-      (indian-ext-dev-slp1-encode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max))))
+(defun indian-ext-dev-iast-encode-region (from to)
+  "In region FROM to TO, encode Devanāgarī as IAST."
+  (interactive "r")
+  (indian-translate-region
+   from to indian-ext-dev-iast-hash t))
 
-  (defun indian-ext-dev-slp1-decode-region (from to)
-    "In region FROM to TO, decode SLP1 to Devanāgarī."
-    (interactive "r")
-    (let ((case-fold-search nil))
-      (indian-translate-region
-      from to indian-ext-dev-slp1-hash nil)))
-  
-  (defun indian-ext-dev-slp1-decode-string (string)
-    "Decode STRING in SLP1 to Devanāgarī."
-    (with-temp-buffer
-      (insert string)
-      (indian-ext-dev-slp1-decode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max))))
+(defun indian-ext-dev-iast-encode-string (string)
+  "Encode STRING in Devanāgarī to IAST."
+  (with-temp-buffer
+    (insert string)
+    (indian-ext-dev-iast-encode-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
-  ;; (indian-ext-dev-slp1-encode-string (indian-ext-dev-slp1-decode-string "anyaTA"))
+(defun indian-ext-dev-iast-decode-region (from to)
+  "In region FROM to TO, decode IAST to Devanāgarī."
+  (interactive "r")
+  (indian-translate-region
+   from to indian-ext-dev-iast-hash nil))
 
-  (defun indian-ext-dev-iast-encode-region (from to)
-    "In region FROM to TO, encode Devanāgarī as IAST."
-    (interactive "r")
-    (indian-translate-region
-     from to indian-ext-dev-iast-hash t))
-
-  (defun indian-ext-dev-iast-encode-string (string)
-    "Encode STRING in Devanāgarī to IAST."
-    (with-temp-buffer
-      (insert string)
-      (indian-ext-dev-iast-encode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max))))
-    
-  (defun indian-ext-dev-iast-decode-region (from to)
-    "In region FROM to TO, decode IAST to Devanāgarī."
-    (interactive "r")
-    (indian-translate-region
-     from to indian-ext-dev-iast-hash nil))
-
-  (defun indian-ext-dev-iast-decode-string (string)
-    "Decode STRING in IAST to Devanāgarī."
-    (with-temp-buffer
-      (insert string)
-      (indian-ext-dev-iast-decode-region (point-min) (point-max))
-      (buffer-substring-no-properties (point-min) (point-max)))))
+(defun indian-ext-dev-iast-decode-string (string)
+  "Decode STRING in IAST to Devanāgarī."
+  (with-temp-buffer
+    (insert string)
+    (indian-ext-dev-iast-decode-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
 
 ;;; Set up an IAST input method
