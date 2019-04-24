@@ -5,6 +5,8 @@
 ;; Author: Patrick McAllister <pma@rdorte.org>
 ;; Keywords: i18n, tools, wp, indian, devanagari, encoding
 ;; URL: https://github.com/paddymcall/indian-ext
+;; Package-Requires: ((emacs "24"))
+;; Version: 0.1
 
 ;; This file is not part of GNU Emacs.
 

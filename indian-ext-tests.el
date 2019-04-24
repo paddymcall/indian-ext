@@ -25,9 +25,9 @@
 
 ;; This is the collection of tests to see how ind-ext.el is behaving.
 
-;; Typical invocation:
+;; Typical invocation (from the root directory of this repository):
 
-;; emacs -Q -batch -l ert -l indian-ext.el -l indian-ext-tests.el  -f ert-run-tests-batch-and-exit
+;; /usr/bin/emacs -Q -batch -L . -l ert -l indian-ext-tests.el  -f ert-run-tests-batch-and-exit
 
 ;;; Code:
 
