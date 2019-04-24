@@ -150,8 +150,6 @@
     (indian-ext-dev-velthuis-encode-region (point-min) (point-max))
     (buffer-substring-no-properties (point-min) (point-max))))
 
-;; (indian-ext-dev-velthuis-decode-string "anyathaa")
-
 (defun indian-ext-dev-velthuis-decode-region (from to)
   "In region FROM to TO, decode Velthuis to Devanāgarī."
   (interactive "r")
@@ -164,8 +162,6 @@
     (insert string)
     (indian-ext-dev-velthuis-decode-region (point-min) (point-max))
     (buffer-substring-no-properties (point-min) (point-max))))
-
-;; (indian-ext-dev-velthuis-encode-string (indian-ext-dev-iast-decode-string "anyathā"))"anyathaa"
 
 (defun indian-ext-dev-slp1-encode-region (from to)
   "In region FROM to TO, encode Devanāgarī as SLP1."
@@ -195,8 +191,6 @@
     (indian-ext-dev-slp1-decode-region (point-min) (point-max))
     (buffer-substring-no-properties (point-min) (point-max))))
 
-;; (indian-ext-dev-slp1-encode-string (indian-ext-dev-slp1-decode-string "anyaTA"))
-
 (defun indian-ext-dev-iast-encode-region (from to)
   "In region FROM to TO, encode Devanāgarī as IAST."
   (interactive "r")
@@ -222,7 +216,6 @@
     (insert string)
     (indian-ext-dev-iast-decode-region (point-min) (point-max))
     (buffer-substring-no-properties (point-min) (point-max))))
-
 
 ;;; Set up an IAST input method
 
