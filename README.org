@@ -1,12 +1,15 @@
 #+TITLE: indian-ext
 #+AUTHOR: Patrick McAllister
 
-This package provides extensions to the standard Emacs ind-util.el
+This package provides extensions to the standard Emacs ~ind-util.el~
 functions.
 
+You can install it from Melpa, with ~M-x package-install indian-ext~
 
-It is currently focused on providing methods for Sanskrit, but that
-might (and hopefully will) change in the future.
+This library is currently focused on providing conversion methods
+between Devanāgarī and its romanized transliterations, but additions
+for other South Asian scripts are very welcome (but check
+~ind-util.el~ first).
 
 It defines the following extra decode/encode functions:
 
@@ -52,20 +55,74 @@ Speed is an issue, however:
 #+BEGIN_SRC emacs-lisp
   (benchmark-run
       (dotimes (x 500)
-	(indian-ext-dev-iast-encode-string "ख.")))
+        (cl-assert
+         (string=
+          (indian-ext-dev-iast-encode-string "ख.")
+          "kha."))))
 
   ;; (4.902170626 30 4.18154369399997) most of the time seems to be
   ;; spent in ‘regex-opt’, called by ‘indian-regexp-of-hashtbl-keys’
+
+
+  ;; Once it’s been byte-compiled, it’s okay though:
+  (byte-compile 'indian-ext-dev-iast-encode-string)
+  (benchmark-run
+      (dotimes (x 500)
+        (cl-assert
+         (string=
+          (indian-ext-dev-iast-encode-string "ख.")
+          "kha."))))
+
+  ;; (0.019145428 0 0.0)
 
   ;; and for comparison:
 
   (benchmark-run
       (dotimes (x 500)
-	(with-temp-buffer
-	  (insert "ख.")
-	  (goto-char (point-min))
-	  (while (re-search-forward "ख" nil t)
-	    (replace-match "kha"))
-	  (buffer-substring-no-properties (point-min) (point-max)))))
-  ;; (0.012275318 0 0.0)
+        (with-temp-buffer
+          (insert "ख.")
+          (goto-char (point-min))
+          (while (re-search-forward "ख" nil t)
+            (replace-match "kha"))
+          (cl-assert
+           (string=
+            (buffer-string)
+            "kha.")))))
+
+  ;; (0.01554602 0 0.0)
+
+
+  ;; Interfacing to ind-util.el
+
+  (require 'ind-util)
+
+  (with-temp-buffer
+    (insert
+     (indian-ext-dev-iast-decode-string "na yuktaḥ!"))
+    (indian-dev-itrans-v5-encode-region (point-min) (point-max))
+    (buffer-string))
+
+  ;; Not working:
+  ;; ;; To Bengali
+
+  ;; (defun hacks/indian-bng-itrans-v5-encode-region (from to)
+  ;;   (interactive "r")
+  ;;   (indian-translate-region
+  ;;    from to indian-bng-itrans-v5-hash t))
+
+  ;; (defun hacks/indian-bng-itrans-v5-decode-region (from to)
+  ;;   (interactive "r")
+  ;;   (indian-translate-region
+  ;;    from to indian-bng-itrans-v5-hash f))
+
+  ;; (with-temp-buffer
+  ;;   ;; convert to devanāgarī
+  ;;   (insert
+  ;;    (indian-ext-dev-iast-decode-string "na yuktaḥ!"))
+  ;;   ;; encode it to itrans-v5
+  ;;   (indian-dev-itrans-v5-encode-region (point-min) (point-max))
+  ;;   ;; and convert that to Bengali (not working?)
+  ;;   (hacks/indian-bng-itrans-v5-decode-region (point-min) (point-max))
+  ;;   (buffer-string))
+
 #+END_SRC
