@@ -35,6 +35,11 @@ You can find other input methods here:
 - Requires login: http://indica-et-buddhica.org/repositorium/software/emacs-utf8-input-framework
 
 
+See also the thread about websites for transliteration on the
+INDOLOGY.info mailing list starting here (October 2023):
+https://list.indology.info/pipermail/indology/2023-October/058241.html
+
+
 * As a library
 
 There are functions to use these extensions in emacs-lisp programs:
